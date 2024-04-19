@@ -3,32 +3,49 @@
     text-decoration: underline;
     text-shadow: 10ch;
   }
+  .logoutBtn:hover{
+    color: red;
+  }
+  nav{
+      height: 75px;
+      background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
+
+  }
+  #profileImage{
+    display: inline-block;
+    width: 33px;
+    height:25px;
+    border-radius: 30px;
+  }
 </style>
-<nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">THE BLOOGY</a>
+      <a class="navbar-brand" href="/"><img src="/images/bloogyLogo.jpg" width="35px" height="35px">&nbsp;THE BLOOGY</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item mx-2">
-            <a class="nav-link active navBarHover" aria-current="page" href="/">Home</a>
+            <a class="nav-link <%= (currentPage === '/') ? 'active' : '' %> navBarHover" aria-current="page" href="/">Home</a>
           </li>
-      
+
 
           <% if(locals.user){%>
+            <!-- <img src="./images/defaultProfileImage.jpg"> -->
             <li class="nav-item mx-2">
-              <a class="nav-link navBarHover" href="/blog/addNewBlog">Add Blog</a>
+              <a class="nav-link  <%= (currentPage === '/addNewBlog') ? "active" : '' %>" href="/blog/addNewBlog">Add Blog</a>
             </li>
+            
             <li class="nav-item dropdown mx-2">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link dropdown-toggle <%= (currentPage === '/user/profile') ? 'active' : '' %>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <%=user.email%>
+                <img src="<%=user.profileImageUrl%>" id="profileImage">
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item logoutBtn" href="/user/logout">Logout</a></li>
+                <li><a class="dropdown-item" href="#">My Blogs</a></li>
+                <li><a class="dropdown-item" href="#">Liked blogs</a></li>
               </ul>
             </li>
           <%} else{%> 
@@ -36,10 +53,10 @@
               <a class="nav-link navBarHover" href="" onclick="alert('Please login to add blog')">Add Blog</a>
             </li>
             <li class="nav-item mx-2">
-              <a class="nav-link navBarHover" href="/user/signUp">Register</a>
+              <a class="nav-link navBarHover <%= (currentPage === '/signUp') ? 'active' : '' %>" href="/user/signUp">Register</a>
             </li>
             <li class="nav-item mx-2">
-              <a class="nav-link navBarHover" href="/user/login">Login</a>
+              <a class="nav-link navBarHover <%= (currentPage === '/login') ? 'active' : '' %>" href="/user/login">Login</a>
             </li>
           <% }%> 
         </ul>

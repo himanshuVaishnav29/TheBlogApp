@@ -7,12 +7,18 @@ const { createToken } = require("../services/authentication");
 
 
 router.get("/signUp",(req,res)=>{
-    res.render('signUp');
+    const currentPage = req.path;
+    res.render('signUp',{
+        currentPage
+    });
 });
 
 
 router.get("/login",(req,res)=>{
-    return res.render('login');
+    const currentPage = req.path;
+    return res.render('login',{
+        currentPage
+    });
 });
 
 
@@ -34,7 +40,7 @@ router.post("/login",async (req,res)=>{
     
         if(!user){
             throw new Error("USER NOT FOUND");
-        }
+        } 
         const salt=user.salt;
         const hashedPassword=user.password;
         const userProvidedHash=createHmac('sha256',salt)
@@ -59,7 +65,7 @@ router.post("/login",async (req,res)=>{
         );
     }     
 });
-
+  
 
 router.get("/logout",(req,res)=>{
     res.clearCookie('token').redirect("/");
