@@ -40,17 +40,20 @@ router.get("/:id",async(req,res)=>{
    
 
 router.post("/addNewBlog",upload.single('coverImage'),async (req,res)=>{
-    const body=req.body
-    const blog=await BLOG.create({
-        title:body.title,
-        body:body.description,
-        coverImageUrl:`/uploads/${req.file.filename}`,
-        createdBy:req.user._id
-    }); 
-    // console.log(body); 
-    // console.log(req.file);
-    // return res.redirect("/"); 
-    return res.redirect(`/blog/${blog._id}`);
+    try{
+        const body=req.body
+        const blog=await BLOG.create({
+            title:body.title,
+            body:body.description,
+            coverImageUrl:`/uploads/${req.file.filename}`,
+            createdBy:req.user._id
+        });  
+        return res.redirect(`/blog/${blog._id}`);
+    }catch(err){
+        console.log("Error adding new blog in /addNewBlog",err);
+        res.end("Error adding new blog in /addNewBlog");
+    }
+
    
 });
 
