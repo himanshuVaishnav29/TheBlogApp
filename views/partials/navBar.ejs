@@ -8,6 +8,7 @@
   }
   nav{
       height: 75px;
+      display: inline;
       background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
 
   }
@@ -17,10 +18,11 @@
     height:25px;
     border-radius: 30px;
   }
+
 </style>
 <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/"><img src="/images/bloogyLogo.jpg" width="35px" height="35px">&nbsp;THE BLOOGY</a>
+      <a class="navbar-brand" href="/"><img src="/images/bloogyLogo.jpg" width="35px" height="35px" alt="Bloogy Logo">&nbsp;THE BLOOGY</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -39,12 +41,13 @@
             
             <li class="nav-item dropdown mx-2">
               <a class="nav-link dropdown-toggle <%= (currentPage === '/user/profile') ? 'active' : '' %>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <%=user.email%>
-                <img src="<%=user.profileImageUrl%>" id="profileImage">
+                <%=user.fullName%>
+                <!-- <img src="<%=user.profileImageUrl%>" id="profileImage" alt="profileImage"> -->
+                <img src="/images/defaultProfileImage.jpg" id="profileImage" alt="profileImage">
               </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item logoutBtn" href="/user/logout">Logout</a></li>
-                <li><a class="dropdown-item" href="#">My Blogs</a></li>
+                <li><a class="dropdown-item" href="/blog">My Blogs</a></li>
                 <li><a class="dropdown-item" href="#">Liked blogs</a></li>
               </ul>
             </li>

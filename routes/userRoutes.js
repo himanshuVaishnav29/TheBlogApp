@@ -21,19 +21,30 @@ router.get("/login",(req,res)=>{
     });
 });
 
-
+ 
 router.post("/signUp",async (req,res)=>{
-    const body=req.body;
-    await USER.create({
-        fullName:body.fullName,
-        email:body.email,
-        password:body.password
-    });
-    return res.redirect("/");
+    const currentPage=req.path;
+    try{
+        const body=req.body;
+         await USER.create({
+            fullName:body.fullName,
+            email:body.email,
+            password:body.password
+        });
+        return res.redirect("/user/login");
+    }catch(error){
+        return res.render("signUp",{
+            error:"User already exists!",
+            currentPage
+        });
+    }
+    
+    
 });
-
+ 
 
 router.post("/login",async (req,res)=>{
+    const currentPage = req.path;
     try{
         const {email,password}=req.body;
         const user=await USER.findOne({email});
@@ -60,7 +71,8 @@ router.post("/login",async (req,res)=>{
     }
     catch(error){
         res.render('login',{
-            error:"Invalid email or password );"
+            error:"Invalid email or password );",
+            currentPage
             }
         );
     }     

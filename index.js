@@ -8,14 +8,15 @@ const mongoose= require("mongoose");
 const BLOG=require("./models/blogSchema");
 const app=express();
 require("dotenv").config();
- 
+  
+// app.use(express.json());
 app.use(express.static(path.resolve('./public/')));
 app.use(express.urlencoded({extended:false}));
 app.use(cookieParser());
 app.use(checkForAuthenticationCookie("token"));
 
    
- 
+  
    
 app.set("view engine","ejs");
 app.set("views",path.resolve("./views"));
@@ -32,7 +33,8 @@ app.use("/blog",blogRoutes);
 app.get("/",async(req,res)=>{
     const currentPage = req.path;
     const allBlogs=await BLOG.find({}).populate("createdBy");
-    // console.log(allBlogs);
+    console.log(allBlogs);
+    // console.log("req obj",req.user);
     // console.log((req.user));
     return res.render("home",{
         user:req.user,
@@ -40,7 +42,7 @@ app.get("/",async(req,res)=>{
         allBlogs:allBlogs
     });  
 }); 
-
+ 
 
 app.listen(process.env.PORT ,(err)=>{
     if(err)console.log("Error starting server:",err);

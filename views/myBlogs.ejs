@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%-include("./partials/header")%>
+    <title>HOME PAGE</title>
+    <style>
+        body{
+          background: radial-gradient(circle at 10% 20%, rgb(0, 0, 0) 0%, rgb(64, 64, 64) 90.2%);
+        }
+        .row {
+            display: flex;
+        }
+
+        .card {
+            flex: 1;
+        }
+
+        .card-img-top {
+            height: 200px; /* Set desired height for the image */
+            width: 100%; /* The image should take up the full width of the card */
+            object-fit: cover; /* Maintain aspect ratio and cover the whole space */
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card {
+            height: 100%; /* Make sure all cards have the same height */
+        }
+        .blogContainer{
+          margin: 20px;
+        }
+        .blogCard{
+         
+          background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
+          overflow: hidden; /* Hide overflow content */
+          text-overflow: ellipsis;
+          color:white;
+          border-style: none;
+          border-radius: 6px;
+          box-shadow: 5px 5px 20px rgb(28, 28, 28);
+        }
+    
+    </style>
+</head>
+<body>
+    <%-include('./partials/navBar')%>
+    <!-- <%= JSON.stringify(user)%> -->
+    <!-- <%= JSON.stringify(allBlogs)%> -->
+    <!-- <h1>HOME PAGE</h1> -->
+
+    <% if(allBlogs.length>0){ %>
+        <div class="container" id="errorAlert">
+          <div class="alert alert-info" role="alert">
+            Total Blogs uploaded: <%=allBlogs.length%>
+           </div>
+        </div>
+      <% }%>
+    <div class="row row-cols-1 row-cols-md-3 g-4 blogContainer">
+        <% allBlogs.forEach((blog) => { %>
+            <div class="col ">
+                <div class="card h-100 blogCard">
+                    <img src="<%= blog.coverImageUrl %>" class="card-img-top blog-image" alt="Blog cover image">
+                    <div class="card-body blogCard">
+                        <h5 class="card-title"><%= blog.title %></h5>
+                        <p class="card-text"><%= blog.body.substring(0,120)%>.........</p>
+                        <p>by- <%= blog.createdBy.fullName %></p>
+                        <a href="/blog/<%=blog._id%>" class="btn btn-primary">Read full blog...</a>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+
+ 
+
+  
+
+     <%-include('./partials/scripts')%>
+</body>
+</html>

@@ -51,31 +51,20 @@
     <!-- <%= JSON.stringify(user)%> -->
     <!-- <h1>HOME PAGE</h1> -->
     <!-- <%= JSON.stringify(allBlogs)%> -->
-    <!-- <div class="row row-cols-1 row-cols-md-3 g-4">
-            <% allBlogs.forEach((blog)=>{ %>
-                    <div class="card" style="width: 18rem;">
-                        <img src="<%=blog.coverImageUrl%>" class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <h5 class="card-title"> <%=blog.title%></h5>
-                          <p class="card-text"><%= blog.body%></p>
-                          <p>by- <%= blog.createdBy%></p>
-                          <a href="#" class="btn btn-primary">Read full blog....</a>
-                        </div>
-                      </div>
-                
-            <% })%>
-    </div> -->
 
- 
+
     <div class="row row-cols-1 row-cols-md-3 g-4 blogContainer">
-      <% allBlogs.forEach((blog) => { %>
+      <% allBlogs.reverse().forEach((blog) => { %>
           <div class="col ">
               <div class="card h-100 blogCard">
                   <img src="<%= blog.coverImageUrl %>" class="card-img-top blog-image" alt="Blog cover image">
                   <div class="card-body blogCard">
                       <h5 class="card-title"><%= blog.title %></h5>
                       <p class="card-text"><%= blog.body.substring(0,120)%>.........</p>
-                      <p>by- <%= blog.createdBy.fullName %></p>
+                      <p>by- <%= blog.createdBy.fullName %> 
+                            on <%=blog.createdAt%>
+                            
+                        </p>
                       <a href="/blog/<%=blog._id%>" class="btn btn-primary">Read full blog...</a>
                   </div>
               </div>
@@ -87,8 +76,8 @@
 
 
 
-
+    <%-include('./partials/footer')%>
      <%-include('./partials/scripts')%>
-     <%-include('./addComment')%>
+     
 </body>
 </html>

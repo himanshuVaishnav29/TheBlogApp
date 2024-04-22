@@ -37,7 +37,7 @@
                       <form class="mx-1 mx-md-4" action="/user/login" method="post">
       
                         <% if(locals.error){ %>
-                          <div class="container">
+                          <div class="container" id="errorAlert">
                             <div class="alert alert-danger" role="alert"><%=locals.error%></div>
                           </div>
                         <% }%>
@@ -82,5 +82,13 @@
       
 
     <%-include('./partials/scripts')%>
+    <script>
+      setTimeout(function() {
+          const errorAlert = document.getElementById('errorAlert');
+          if (errorAlert) {
+              errorAlert.style.display = 'none';
+          }
+      },3000);
+    </script>
 </body>
 </html>

@@ -12,7 +12,7 @@ function checkForAuthenticationCookie(cookieName){
             const userPayload=validateToken(tokenCookieValue);
             // console.log("userPayload",userPayload);
             req.user=userPayload;
-            // console.log(req.user);
+            // console.log(req.user._id);
         }catch(err){
         
         }

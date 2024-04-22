@@ -5,19 +5,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%-include("./partials/header")%>
     <title>Document</title>
+    <style>
+        /* #blogBodyDiv {
+            width: 100%;
+            max-width: 800px;
+            height: 400px; 
+            overflow-x: hidden;
+             overflow-y: scroll;
+            white-space: pre-wrap;
+        } */
+        body{
+          background: radial-gradient(circle at 10% 20%, rgb(0, 0, 0) 0%, rgb(64, 64, 64) 90.2%);
+          color:white;
+        }
+        #blogBodyDiv {
+            width: 80%;
+            overflow-x: hidden;
+            white-space: pre-wrap;
+            text-align: justify;
+            margin: 0 30px 0 30px;
+            padding: 1rem;
+         }
+         #mainBlogBodyContainer{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: fit-content; 
+         }
+         .blueEffectBackGround{
+            background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
+         }
+         .blackEffectBackGround{
+            background: radial-gradient(circle at 10% 20%, rgb(0, 0, 0) 0%, rgb(64, 64, 64) 90.2%);
+
+         }
+         #blogPageCoverImage{
+            object-fit: cover;
+            max-height: 500px;
+            width: 500px;
+         }
+         
+    </style>
 </head>
 <body>
     <%-include('./partials/navBar')%>
      
     
     <!-- <%=JSON.stringify (currentBlog)%> -->
-    <img src="<%=currentBlog.createdBy.profileImageUrl %>"/>
+    <!-- <%=currentBlog.createdBy.profileImageUrl%> -->
     <h1><%=currentBlog.title%></h1>
-    <pre>
-        <%=currentBlog.body%>
-    </pre>
-    <h1>Author:</h1>
-    <%=currentBlog.createdBy.fullName%>
+    <center><img src="<%=currentBlog.coverImageUrl %>"id="blogPageCoverImage"></center>
+    <div id="mainBlogBodyContainer">
+        <div id="blogBodyDiv">
+           <%=currentBlog.body%>
+           <h2>Author:</h2>
+           <img class="rounded-circle shadow-1-strong me-3"
+           src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(33).webp" alt="avatar" width="60"
+           height="60" />
+           <%=currentBlog.createdBy.fullName%>
+        </div>
+ 
+    </div>
+    
+    
+
+
+
+    
+    <!-- <ul>
+        <% comments.forEach((item)=>{%>
+            <li><%= item.content%> -<%= item.createdBy.fullName%></li>
+            
+        <%}) %>
+    </ul> -->
+
+
+
+
+
+
+    <section>
+        <div class="container my-5 py-5" >
+          <div class="row d-flex justify-content-center">
+            <div class="col-md-12 col-lg-10 ">
+              <div class="card text-white blueEffectBackGround">
+                <div class="card-body p-4">
+                  <!-- <h4 class="mb-0">Recent comments</h4> -->
+                  <h5>Comments(<%=comments.length%>)</h5>
+                  <!-- <p class="fw-light mb-4 pb-2">Latest Comments section by users</p> -->
+      
+                <hr class="my-0" style="height: 1px;" />
+                <% comments.forEach((item)=>{%>
+                <div class="card-body p-4">
+                  <div class="d-flex flex-start">
+                    <img class="rounded-circle shadow-1-strong me-3"
+                      src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(33).webp" alt="avatar" width="60"
+                      height="60" />
+                    <div>
+                      <h6 class="fw-bold mb-1"><%= item.createdBy.fullName%></h6>
+                      <div class="d-flex align-items-center mb-3">
+                        <p class="mb-0">
+                          <%=item.createdAt.toLocaleDateString("en-US", { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })%>
+                        </p>
+        
+                      </div>
+                      <h5 class="mb-0">
+                        <%= item.content%>
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+      
+                <hr class="my-0" />
+                <% })%>
+              </div>
+
+              <h5>ADD COMMENT</h5>
+              <div>
+                  <form action="/blog/comment/<%= currentBlog._id %>" method="post">
+                      <input type="text"  placeholder="Enter comment" name="content" required/>
+                      <!-- <button type="submit">Add comment</button> -->
+                      <button 
+                          type="<%= (user) ? 'submit' : 'button' %>" 
+                          <% if (!user) { %> 
+                              onclick="alert('Please login to add comment')" 
+                          <% } %>>
+                          Add comment
+                      </button>
+                  
+
+                  </form>
+              </div>
+              <br>
+            </div>
+          </div>
+        </div>
+      </section>
     <%-include('./partials/scripts')%>
 </body>
 </html>

@@ -16,7 +16,7 @@ const blogSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"users"
     }
-},{timeStamps:true});
+},{timestamps:true});
 
 const blog=mongoose.model("blogs",blogSchema);
 module.exports=blog;
