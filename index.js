@@ -23,7 +23,7 @@ app.set("views",path.resolve("./views"));
 
 mongoose
     .connect(process.env.MONGO_URI)
-    .then(()=>console.log("MongoDB local connected"))
+    .then(()=>console.log("MongoDB Atlas connected"))
     .catch((err)=>console.log("Error connecting to MongoDB",err));
  
   

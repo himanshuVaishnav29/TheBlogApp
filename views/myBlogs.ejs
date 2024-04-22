@@ -59,6 +59,8 @@
            </div>
         </div>
       <% }%>
+
+    <% if(allBlogs.length>0) {%>
     <div class="row row-cols-1 row-cols-md-3 g-4 blogContainer">
         <% allBlogs.forEach((blog) => { %>
             <div class="col ">
@@ -73,7 +75,12 @@
                 </div>
             </div>
         <% }) %>
-
+        <% }else{%>
+            <h1 style="color: white;">Empty &#128549;?.......Start writing now !</h1>
+        <%}%>
+       
+            
+        
  
 
   

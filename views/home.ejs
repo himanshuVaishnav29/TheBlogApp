@@ -62,7 +62,7 @@
                       <h5 class="card-title"><%= blog.title %></h5>
                       <p class="card-text"><%= blog.body.substring(0,120)%>.........</p>
                       <p>by- <%= blog.createdBy.fullName %> 
-                            on <%=blog.createdAt%>
+                            <br>on: <%=blog.createdAt.toLocaleDateString("en-US", { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })%>
                             
                         </p>
                       <a href="/blog/<%=blog._id%>" class="btn btn-primary">Read full blog...</a>
