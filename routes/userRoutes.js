@@ -63,11 +63,16 @@ router.post("/login",async (req,res)=>{
         // console.log("user pass",userProvidedHash);
         if(hashedPassword!==userProvidedHash){
             throw new Error("Invalid password");
-        } 
+        }  
+        const HOUR = 3600000
         // console.log(user);
         const token=createToken(user);
-        // console.log("token",token);
-        return res.cookie('token',token).redirect("/");
+        const cookieOptions = {
+            expires: new Date(Date.now() + HOUR), 
+            httpOnly: true // Cookie only accessible by the server
+        };
+      
+        return res.cookie('token',token,cookieOptions).redirect("/");
     }
     catch(error){
         res.render('login',{
@@ -75,7 +80,7 @@ router.post("/login",async (req,res)=>{
             currentPage
             }
         );
-    }     
+    }      
 });
   
 

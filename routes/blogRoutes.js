@@ -39,26 +39,33 @@ router.get("/:id",async(req,res)=>{
 });
    
 
-router.post("/addNewBlog",upload.single('coverImage'),async (req,res)=>{
-    try{
-        const body=req.body
-        const blog=await BLOG.create({
-            title:body.title,
-            body:body.description,
-            coverImageUrl:`/uploads/${req.file.filename}`,
-            createdBy:req.user._id
-        });  
+
+router.post("/addNewBlog", upload.single('coverImage'), async (req, res) => {
+    try {
+        const body = req.body;
+        let coverImageUrl;
+        if (req.file) {
+            coverImageUrl = `/uploads/${req.file.filename}`;
+        } else {
+            coverImageUrl = "/images/defaultBlogImage.jpg";
+        }
+
+        const blog = await BLOG.create({
+            title: body.title,
+            body: body.description,
+            coverImageUrl: coverImageUrl,
+            createdBy: req.user._id
+        });
+
         return res.redirect(`/blog/${blog._id}`);
-    }catch(err){
-        console.log("Error adding new blog in /addNewBlog",err);
+    } catch (err) {
+        console.log("Error adding new blog in /addNewBlog", err);
         res.end("Error adding new blog in /addNewBlog");
     }
-
-   
 });
 
  
-
+ //my blogs 
 router.get("/",async(req,res)=>{
     try{
         // console.log(req.user);
@@ -74,12 +81,11 @@ router.get("/",async(req,res)=>{
         });    
         // return res.render('myBlogs');
     }catch(err){
-        console.log("err")
-       return  "hi";
+        console.log("err in /",err);
     }
-})  
+}); 
+  
  
-
 router.post("/comment/:blogId",async(req,res)=>{
     try{
         const comment=await COMMENT.create({
@@ -88,14 +94,77 @@ router.post("/comment/:blogId",async(req,res)=>{
             createdBy:req.user 
         });
         // console.log(comment);
-        res.redirect(`/blog/${req.params.blogId}`);
+        return res.redirect(`/blog/${req.params.blogId}`);
     }catch(err){
         console.log("Error in comments/blogId",err);
     } 
-   
 }); 
 
+
+
+router.get("/update/:blogId",async(req,res)=>{
+    try{
+        const user=req.user;
+        const currentPage=req.path;
+        const blogId=req.params.blogId;
+        // console.log(blogId);
+        const blog=await BLOG.findById({_id:blogId});
+        // console.log(blog);
+        return res.render('updateBlog',{
+            blog,
+            currentPage,
+            user 
+        });
+    }
+    catch(err){
+        console.log("err hello");
+        res.end();
+    }
+});
+
+
+router.post("/update/:blogId", upload.single('coverImage'), async (req, res) => {
+    try {
+        const body = req.body;
+        const blogId = req.params.blogId;
+        
+        let updateFields = {
+            title: body.title,
+            body: body.description
+        };
+
+        // Add coverImageUrl if it exists
+        if (req.file) {
+            updateFields.coverImageUrl = `/uploads/${req.file.filename}`;
+        }
+
+        const blog = await BLOG.findByIdAndUpdate(
+            blogId,
+            updateFields,
+            { new: true } // To return the updated document
+        ).populate("createdBy");
+
+        console.log(blog);
+        return res.redirect("/");
+    } catch (err) {
+        console.log("Error in post /update/:blogId", err);
+        return res.status(500).send("Internal Server Error");
+    }
+});
+
+  
+// DELETING BLOG
+ router.post("/delete/:blogId",async(req,res)=>{
+    try{
+        const blogId=req.params.blogId;
+        // res.end(blogId);
+        await BLOG.findByIdAndDelete(blogId);
+        console.log("Blog ",blogId," deleted successfully");
+        return res.redirect("/blog");
+    }catch(err){
+        console.log("Error in /delete/:blogId",err);
+    }
+ });
  
-
-
+ 
 module.exports=router;

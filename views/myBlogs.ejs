@@ -16,9 +16,9 @@
         }
 
         .card-img-top {
-            height: 200px; /* Set desired height for the image */
-            width: 100%; /* The image should take up the full width of the card */
-            object-fit: cover; /* Maintain aspect ratio and cover the whole space */
+            height: 200px; 
+            width: 100%;
+            object-fit: cover;
         }
 
         .blog-image {
@@ -28,22 +28,47 @@
         }
 
         .card {
-            height: 100%; /* Make sure all cards have the same height */
+            height: 100%;
         }
         .blogContainer{
           margin: 20px;
         }
         .blogCard{
-         
           background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
-          overflow: hidden; /* Hide overflow content */
+          overflow: hidden;
           text-overflow: ellipsis;
           color:white;
           border-style: none;
           border-radius: 6px;
           box-shadow: 5px 5px 20px rgb(28, 28, 28);
         }
-    
+        .delete-confirmation-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgb(234, 159, 159);
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            z-index: 10; 
+        }
+
+        
+        .delete-confirmation-popup.show {
+            display: block;
+            
+        }
+
+        .btn {
+            margin: 5px;
+        }
+        .backgroundBlur{
+            backdrop-filter: blur(5px);  /* Adjust blur amount as desired */
+            /* Consider adding a fallback for older browsers: */
+            -webkit-backdrop-filter: blur(5px);
+        }
     </style>
 </head>
 <body>
@@ -71,6 +96,17 @@
                         <p class="card-text"><%= blog.body.substring(0,120)%>.........</p>
                         <p>by- <%= blog.createdBy.fullName %></p>
                         <a href="/blog/<%=blog._id%>" class="btn btn-primary">Read full blog...</a>
+                        <a href="/blog/update/<%=blog._id%>">Edit</a>
+                        
+
+                        <button class="btn btn-danger delete-btn" data-blog-id="<%= blog._id %>">Delete</button>
+                        <div class="delete-confirmation-popup" data-blog-id="<%= blog._id %>">
+                          <form action="/blog/delete/<%= blog._id %>" method="POST">
+                            <h5 style="color: black;">Are you sure you want to delete this blog?</h5>
+                            <button type="submit" class="btn btn-danger confirm-delete">Confirm</button>
+                            <button type="button" class="btn btn-secondary cancel-delete">Cancel</button>
+                          </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,5 +122,30 @@
   
 
      <%-include('./partials/scripts')%>
+
+     <script>
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const blogId = event.target.dataset.blogId; 
+                const popup = document.querySelector(`.delete-confirmation-popup[data-blog-id="${blogId}"]`); 
+                if (popup) {
+                    popup.classList.add('show'); 
+                    document.body.classList.add('backgroundBlur');
+                }
+            });
+        });
+        const cancelButtons = document.querySelectorAll('.cancel-delete');
+        cancelButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                const closestPopup = button.closest('.delete-confirmation-popup');
+                if (closestPopup) {
+                    closestPopup.classList.remove('show'); 
+                    document.body.classList.remove('backgroundBlur');
+                }
+            });
+        });
+     </script>
 </body>
 </html>

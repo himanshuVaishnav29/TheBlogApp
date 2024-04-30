@@ -52,7 +52,9 @@
     <!-- <h1>HOME PAGE</h1> -->
     <!-- <%= JSON.stringify(allBlogs)%> -->
 
-
+    <!-- <%=JSON.stringify(allComments)%> -->
+    
+    <!-- <%=JSON.stringify(allBlogs)%> -->
     <div class="row row-cols-1 row-cols-md-3 g-4 blogContainer">
       <% allBlogs.reverse().forEach((blog) => { %>
           <div class="col ">
@@ -66,6 +68,23 @@
                             
                         </p>
                       <a href="/blog/<%=blog._id%>" class="btn btn-primary">Read full blog...</a>
+                      
+                      
+                      <span>
+                        Total Comments:
+                        <% 
+                            let count = 0;
+                            allComments.forEach((item) => {
+                                if (item.blogId.toString() === blog._id.toString()) {
+                                    count++;
+                                }
+                            });
+                        %>
+                        <%= count %>
+                    </span>
+
+                    
+
                   </div>
               </div>
           </div>
@@ -78,6 +97,7 @@
 
     <%-include('./partials/footer')%>
      <%-include('./partials/scripts')%>
+
      
 </body>
 </html>
