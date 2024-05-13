@@ -158,14 +158,18 @@
                       <h5 class="mb-0">
                         <%= item.content%>
                       </h5>
-                      <% if(user._id==currentBlog.createdBy._id){%>
-                       
-                        <form action="/blog/comment/delete/<%=item.blogId%>/<%=item._id%>" method="post">
-                          <button type="submit"  class="btn btn-danger delete-btn" id="commentDeleteButton">
-                           <i class="fa fa-trash-o" style="font-size:24px"></i>
-                          </button>
-                        </form>
+
                       
+                      <%if(user){%>
+                        <% if(user._id==currentBlog.createdBy._id){%>
+                        
+                          <form action="/blog/comment/delete/<%=item.blogId%>/<%=item._id%>" method="post">
+                            <button type="submit"  class="btn btn-danger delete-btn" id="commentDeleteButton">
+                            <i class="fa fa-trash-o" style="font-size:24px"></i>
+                            </button>
+                          </form>
+                        
+                        <%}%>
                       <%}%>
                     </div>
                   </div>
