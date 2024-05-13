@@ -100,6 +100,14 @@ router.post("/comment/:blogId",async(req,res)=>{
     } 
 }); 
 
+router.post("/comment/delete/:blogId/:commentId",async(req,res)=>{
+    try{
+        await COMMENT.findByIdAndDelete(req.params.commentId);
+        res.redirect(`/blog/${req.params.blogId}`);
+    }catch(err){
+        console.log("Error in /comment/delete/:commentId ",err)
+    }
+})
 
 
 router.get("/update/:blogId",async(req,res)=>{
@@ -159,6 +167,7 @@ router.post("/update/:blogId", upload.single('coverImage'), async (req, res) => 
         const blogId=req.params.blogId;
         // res.end(blogId);
         await BLOG.findByIdAndDelete(blogId);
+        await COMMENT.deleteMany({ blogId: req.params.blogId });
         console.log("Blog ",blogId," deleted successfully");
         return res.redirect("/blog");
     }catch(err){

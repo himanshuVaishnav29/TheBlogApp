@@ -2,6 +2,7 @@ const{Router}=require("express");
 const router=Router();
 const {createHmac} =require("crypto");
 const USER=require("../models/userSchema");
+const BLOG=require("../models/blogSchema");
 const { createToken } = require("../services/authentication");
 
 
@@ -9,7 +10,8 @@ const { createToken } = require("../services/authentication");
 router.get("/signUp",(req,res)=>{
     const currentPage = req.path;
     res.render('signUp',{
-        currentPage
+        currentPage,
+        error:"" 
     });
 });
 
@@ -24,22 +26,33 @@ router.get("/login",(req,res)=>{
  
 router.post("/signUp",async (req,res)=>{
     const currentPage=req.path;
+    let errorMessage="";
     try{
         const body=req.body;
-         await USER.create({
+        const existingUser = await USER.findOne({ email: body.email }); 
+        if (existingUser) { 
+            return res.render("signUp",{error:"User already exists",currentPage});
+            // throw new Error("User already exists");
+        }
+        console.log(existingUser);
+        if (body.password.length < 5) { 
+            // throw new Error("Password too short");
+            return res.render("signUp",{error:"Password too short",currentPage});
+        } 
+        await USER.create({
             fullName:body.fullName,
             email:body.email,
             password:body.password
         });
         return res.redirect("/user/login");
-    }catch(error){
+    }catch(err){
+        // errorMessage = err.message; 
+        console.log(err);
         return res.render("signUp",{
-            error:"User already exists!",
+            // error:errorMessage,
             currentPage
         });
-    }
-    
-    
+    } 
 });
  
 
@@ -69,7 +82,7 @@ router.post("/login",async (req,res)=>{
         const token=createToken(user);
         const cookieOptions = {
             expires: new Date(Date.now() + HOUR), 
-            httpOnly: true // Cookie only accessible by the server
+            httpOnly: true 
         };
       
         return res.cookie('token',token,cookieOptions).redirect("/");
@@ -86,6 +99,22 @@ router.post("/login",async (req,res)=>{
 
 router.get("/logout",(req,res)=>{
     res.clearCookie('token').redirect("/");
-})
+});
+
+
+//user Profile
+router.get("/:userId",async(req,res)=>{
+    const currentPage=req.path;
+    const userBlogs=await BLOG.find({createdBy:req.params.userId});
+    const searchedUser=await USER.findById(req.params.userId);
+    
+    res.render('userProfile',{
+            userBlogs,
+            user:req.user,
+            searchedUser,
+            currentPage
+        }
+    );
+});
 
 module.exports=router;
