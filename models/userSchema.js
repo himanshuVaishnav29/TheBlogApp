@@ -41,11 +41,9 @@ userSchema.pre('save',function(next){
         .update(user.password)
         .digest("hex");
 
-
     console.log(hashedPassword);
     this.salt=salt;
     this.password=hashedPassword;
-
     next();
 });
 

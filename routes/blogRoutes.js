@@ -74,6 +74,7 @@ router.get("/",async(req,res)=>{
         const allBlogs=await BLOG.find({createdBy:req.user._id}).populate("createdBy");
         // console.log("Allblogs",allBlogs);     
         // console.log("curr user");
+        // console.log(currentPage);
         return res.render('myBlogs',{
             allBlogs,
             currentPage,
@@ -153,7 +154,7 @@ router.post("/update/:blogId", upload.single('coverImage'), async (req, res) => 
         ).populate("createdBy");
 
         console.log(blog);
-        return res.redirect("/");
+        return res.redirect("/blog/");
     } catch (err) {
         console.log("Error in post /update/:blogId", err);
         return res.status(500).send("Internal Server Error");
