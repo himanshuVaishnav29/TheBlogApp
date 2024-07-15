@@ -13,8 +13,8 @@ require("dotenv").config();
 // app.use((req, re))
   
 // app.use(express.json());
-// app.use(express.static(path.resolve('./public/')));
-app.use(express.static('public'));
+app.use(express.static(path.resolve('./public/')));
+// app.use(express.static('public'));
 app.use(express.urlencoded({extended:false}));
 app.use(cookieParser());
 app.use(checkForAuthenticationCookie("token"));
